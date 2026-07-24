@@ -75,6 +75,35 @@
     });
   });
 
+  // Close the menu when tapping the backdrop (area outside the panel)
+  mobileMenu.querySelectorAll('[data-menu-close]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      setMenuOpen(false);
+    });
+  });
+
+  // Scrollspy — highlight the section currently in view within the mobile menu
+  const mnavItems = document.querySelectorAll('#mobile-menu .mnav-item[href^="#"]');
+  const spySections = document.querySelectorAll('main section[id]');
+  if (mnavItems.length && spySections.length && 'IntersectionObserver' in window) {
+    const setActive = function (id) {
+      mnavItems.forEach(function (item) {
+        item.classList.toggle('is-active', item.getAttribute('href') === '#' + id);
+      });
+    };
+    const spy = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    );
+    spySections.forEach(function (s) {
+      spy.observe(s);
+    });
+  }
+
   // Fade-in on scroll
   const fadeEls = document.querySelectorAll('.fade-in');
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
