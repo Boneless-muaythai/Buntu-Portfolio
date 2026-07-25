@@ -190,16 +190,19 @@
     @media (prefers-color-scheme: light) {
       :root:not([data-theme="dark"]) .tech-tile img[src$="/FFFFFF" i] { filter: invert(1); }
     }
-    /* Footer logo has a light-colored wordmark — give it a dark chip in light mode so it stays legible */
-    .footer-logo-chip { padding: 0.85rem 1rem; border-radius: 1rem; }
-    :root[data-theme="light"] .footer-logo-chip { background: #0b0b0f; }
-    @media (prefers-color-scheme: light) {
-      :root:not([data-theme="dark"]) .footer-logo-chip { background: #0b0b0f; }
+    /* The logo's "L" and wordmark are near-white, so they vanish on a light background.
+       Inverting flips lightness *and* hue; rotating the hue 180deg puts it back. Net effect:
+       the silver goes charcoal while the blue "S" stays blue. No backing plate needed.
+       (Same technique as the white tech icons above.) */
+    :root[data-theme="light"] .brand-logo-hero,
+    :root[data-theme="light"] .brand-logo-footer {
+      filter: invert(1) hue-rotate(180deg);
     }
-    /* Keep the About logo panel dark in light mode so the SL mark stays vivid */
-    :root[data-theme="light"] .logo-panel { background-color: #0b0b0f; }
     @media (prefers-color-scheme: light) {
-      :root:not([data-theme="dark"]) .logo-panel { background-color: #0b0b0f; }
+      :root:not([data-theme="dark"]) .brand-logo-hero,
+      :root:not([data-theme="dark"]) .brand-logo-footer {
+        filter: invert(1) hue-rotate(180deg);
+      }
     }
   </style>
 </head>
@@ -362,7 +365,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
           <div class="hidden lg:flex justify-center lg:justify-start">
-            <div class="logo-panel relative p-6 rounded-2xl border border-surface-border bg-background/50 shadow-logo-glow">
+            <div class="relative p-6 rounded-2xl border border-surface-border bg-background/50 shadow-logo-glow">
               <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-accent/5 via-transparent to-accent-cyan/5 pointer-events-none" aria-hidden="true"></div>
               <img src="assets/images/sidlayiya-labs-mark.png" onerror="this.onerror=null;this.src='assets/images/sidlayiya-labs-logo.png'" alt="Sidlayiya Labs — Ideas Into Innovation" class="brand-logo-hero relative max-w-[14rem] lg:max-w-[16rem] mx-auto"/>
             </div>
@@ -729,7 +732,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
         <div class="lg:col-span-1">
-          <a href="#home" class="footer-logo-chip inline-block mb-5" aria-label="Sidlayiya Labs — Home">
+          <a href="#home" class="inline-block mb-5" aria-label="Sidlayiya Labs — Home">
             <img src="assets/images/sidlayiya-labs-logo-full.png" onerror="this.onerror=null;this.src='assets/images/sidlayiya-labs-logo.png'" alt="Sidlayiya Labs — Ideas Into Innovation" class="brand-logo-footer" width="200" height="154"/>
           </a>
           <p class="text-text-secondary text-sm leading-relaxed mb-6">Building premium websites that help brands stand out and grow online. Ideas into innovation.</p>
